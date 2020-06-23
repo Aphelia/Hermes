@@ -1,0 +1,11 @@
+name: Hermes
+version: "0.4 CANARY"
+main: io.github.aphelia.hermes.spigot.Plugin
+description: "Use this to connect to Bit on Discord."
+load: STARTUP
+commands:
+  token:
+    usage: /token
+    description: Get the token to be printed to console.
+    permission: comlink.token
+    permission-message: "§cInsufficient Permissions!"
