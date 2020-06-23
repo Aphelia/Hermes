@@ -1,8 +1,6 @@
 package io.github.aphelia.hermes.common;
 
 import com.google.gson.Gson;
-import net.md_5.bungee.api.ProxyServer;
-import org.bukkit.ChatColor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -45,7 +43,7 @@ public class Antenna extends Thread {
                 if(inputStream == null) inputStream = new DataInputStream(socket.getInputStream());
                 String in = inputStream.readUTF();
                 HashMap<String, String> content = json.fromJson(in, HashMap.class);
-                utils.sendMessage(ChatColor.AQUA + "From " + content.get("user").toUpperCase() + " via Discord: " + ChatColor.BLUE + content.get("content"));
+                utils.sendMessage("§bFrom " + content.get("user").toUpperCase() + " via Discord: §1" + content.get("content"));
             } catch (IOException e) {
                 try {
                     System.out.println("Failed to send message to Aphelia servers. Waiting 30 seconds to reconnect.");
@@ -76,7 +74,6 @@ public class Antenna extends Thread {
         }
         catch (IOException e){
             TimeUnit.SECONDS.sleep(5);
-            ProxyServer.getInstance().getLogger().info("Lost connection to Aphelia; attempting to reconnect!");
             this.socket.close();
             this.socket = new Socket(ip, port);
         }
