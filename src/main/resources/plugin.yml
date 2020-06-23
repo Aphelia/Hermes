@@ -1,5 +1,5 @@
 name: Hermes
-version: "0.4 CANARY"
+version: "0.1 CANARY"
 main: io.github.aphelia.hermes.spigot.SpigotPlugin
 description: "Use this to connect to Bit on Discord."
 load: STARTUP
