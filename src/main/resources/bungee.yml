@@ -1,0 +1,4 @@
+name: Hermes
+main: io.github.aphelia.hermes.bungee.BungeePlugin
+version: "0.1 Canary"
+author: AwesomestGamer
