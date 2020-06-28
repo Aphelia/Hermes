@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+@SuppressWarnings("unused")
 public class BungeePlugin extends Plugin {
     public static BungeePlugin plugin;
     private Configuration config;
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void onEnable() {
         plugin = this;
@@ -56,6 +58,7 @@ public class BungeePlugin extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new CommandListener());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void saveDefaultConfig() {
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
