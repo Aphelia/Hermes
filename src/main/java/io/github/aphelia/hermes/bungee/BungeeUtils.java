@@ -21,4 +21,9 @@ public class BungeeUtils implements Utils {
     public void log(Level level, String string) {
         ProxyServer.getInstance().getLogger().log(level, string);
     }
+
+    @Override
+    public String getFormat() {
+        return BungeePlugin.plugin.getConfig().getString("format").replace('&', '§');
+    }
 }

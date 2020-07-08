@@ -6,7 +6,7 @@
 
     <groupId>io.github.aphelia.hermes</groupId>
     <artifactId>Hermes</artifactId>
-    <version>0.1-UNIVERSAL</version>
+    <version>0.1-UNIVERSAL-PRE</version>
     <build>
         <plugins>
             <plugin>

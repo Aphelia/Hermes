@@ -18,8 +18,10 @@ public class Antenna extends Thread {
     private static Utils utils;
     private Socket socket;
     private Antenna(){}
-    private final static String ip = "localhost";
-    private final static int port = 2564;
+    private final static String ip = "awesomest.us.to";
+    private final static int port = 2565;
+    private DataOutputStream outputStream;
+    private DataInputStream inputStream;
 
     public static Antenna getInstance(Utils utilsInstance) {
         utils = utilsInstance;
@@ -27,6 +29,8 @@ public class Antenna extends Thread {
             try {
                 instance = new Antenna();
                 instance.socket = new Socket(ip, port);
+                instance.inputStream = new DataInputStream(instance.socket.getInputStream());
+                instance.outputStream = new DataOutputStream(instance.socket.getOutputStream());
             }
             catch(IOException e) {
                 e.printStackTrace();
@@ -37,22 +41,14 @@ public class Antenna extends Thread {
 
 
     public void run() {
-        DataInputStream inputStream = null;
         while(true) {
             try {
-                if(inputStream == null) inputStream = new DataInputStream(socket.getInputStream());
                 String in = inputStream.readUTF();
                 HashMap<String, String> content = json.fromJson(in, HashMap.class);
-                utils.sendMessage("§bFrom " + content.get("user").toUpperCase() + " via Discord: §1" + content.get("content"));
+                utils.sendMessage(utils.getFormat().replace("%name%", content.get("user")).replace("%message%", content.get("content")));
             } catch (IOException e) {
                 try {
-                    System.out.println("Failed to send message to Aphelia servers. Waiting 30 seconds to reconnect.");
-                    TimeUnit.SECONDS.sleep(30);
-                    System.out.println("Attempting to reconnect!");
-                    this.socket.close();
-                    this.socket = new Socket(ip, port);
-                    inputStream = new DataInputStream(socket.getInputStream());
-                    System.out.println("Reconnected!");
+                    reconnect();
                 }
                 catch(Exception severe) {
                     severe.printStackTrace();
@@ -139,11 +135,35 @@ public class Antenna extends Thread {
         HashMap<String, String> dataMap = new HashMap<>();
         String newToken;
         dataMap.put("type", "TOKENREQUEST");
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-        dataOutputStream.writeUTF(json.toJson(dataMap));
-        newToken = json.fromJson(dataInputStream.readUTF(), HashMap.class).get("response").toString();
+        outputStream.writeUTF(json.toJson(dataMap));
+        newToken = json.fromJson(inputStream.readUTF(), HashMap.class).get("response").toString();
         token = newToken;
         return newToken;
+    }
+
+    void reconnect() {
+        utils.log(Level.WARNING, "Lost connection to Aphelia. Will attempt reconnection.");
+
+        try {
+            int wait = 15;
+            while (true) {
+                TimeUnit.SECONDS.sleep(wait);
+                try {
+                    utils.log(Level.INFO, "Attempting to reconnect!");
+                    this.socket.close();
+                    this.socket = new Socket(ip, port);
+                    inputStream = new DataInputStream(this.socket.getInputStream());
+                    outputStream = new DataOutputStream(this.socket.getOutputStream());
+                    break;
+                } catch(IOException e) {
+                    wait *= 2;
+                    utils.log(Level.WARNING, "Reconnection failed. Attempting to reconnect in " + wait + "seconds.");
+                }
+            }
+        }
+        catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }

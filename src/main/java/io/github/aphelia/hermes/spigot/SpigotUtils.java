@@ -19,4 +19,8 @@ public class SpigotUtils implements Utils {
     public void log(Level level, String string) {
         Bukkit.getLogger().log(level, string);
     }
+    @Override
+    public String getFormat() {
+        return SpigotPlugin.getPlugin(SpigotPlugin.class).getConfig().getString("format").replace('&', '§');
+    }
 }
