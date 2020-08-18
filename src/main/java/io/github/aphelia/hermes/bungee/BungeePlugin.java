@@ -50,12 +50,22 @@ public class BungeePlugin extends Plugin {
         }
         try {
             Antenna.getInstance(BungeeUtils.getInstance()).ping();
+            Antenna.getInstance(BungeeUtils.getInstance()).passConnectMessage();
         }
         catch(IOException | InterruptedException e) {
             e.printStackTrace();
         }
         Antenna.getInstance(BungeeUtils.getInstance()).start();
         getProxy().getPluginManager().registerCommand(this, new CommandListener());
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            Antenna.getInstance(BungeeUtils.getInstance()).passDisconnectMessage();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

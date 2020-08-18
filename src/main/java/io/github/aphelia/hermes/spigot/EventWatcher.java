@@ -1,6 +1,7 @@
 package io.github.aphelia.hermes.spigot;
 
 import io.github.aphelia.hermes.common.Antenna;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,7 +28,7 @@ public class EventWatcher implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoinEvent(PlayerJoinEvent event){
         try {
-            Antenna.getInstance(SpigotUtils.getInstance()).passJoinMessage(event.getPlayer().getName());
+            Antenna.getInstance(SpigotUtils.getInstance()).passJoinMessage(event.getPlayer().getName(), Bukkit.getServer().getOnlinePlayers().size(), Bukkit.getServer().getMaxPlayers());
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -36,7 +37,7 @@ public class EventWatcher implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuitEvent(PlayerQuitEvent event){
         try {
-            Antenna.getInstance(SpigotUtils.getInstance()).passLeaveMessage(event.getPlayer().getName());
+            Antenna.getInstance(SpigotUtils.getInstance()).passLeaveMessage(event.getPlayer().getName(), Bukkit.getServer().getOnlinePlayers().size() - 1, Bukkit.getServer().getMaxPlayers());
         }
         catch(IOException e) {
             e.printStackTrace();

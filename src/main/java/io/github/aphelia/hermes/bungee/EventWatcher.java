@@ -1,6 +1,7 @@
 package io.github.aphelia.hermes.bungee;
 
 import io.github.aphelia.hermes.common.Antenna;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -18,7 +19,7 @@ public class EventWatcher implements Listener {
     public void onAsyncPlayerChatEvent(ChatEvent event){
         if(event.getMessage().startsWith("/")) return;
         try {
-            Antenna.getInstance(BungeeUtils.getInstance()).passChatMessage(((ProxiedPlayer)event.getSender()).getName(), event.getMessage());
+            Antenna.getInstance(BungeeUtils.getInstance()).passChatMessage(((ProxiedPlayer) event.getSender()).getName(), event.getMessage());
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -27,7 +28,7 @@ public class EventWatcher implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PostLoginEvent event){
         try {
-            Antenna.getInstance(BungeeUtils.getInstance()).passJoinMessage(event.getPlayer().getName());
+            Antenna.getInstance(BungeeUtils.getInstance()).passJoinMessage(event.getPlayer().getName(), ProxyServer.getInstance().getOnlineCount(), ProxyServer.getInstance().getConfig().getPlayerLimit());
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -36,7 +37,7 @@ public class EventWatcher implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuitEvent(PlayerDisconnectEvent event){
         try {
-            Antenna.getInstance(BungeeUtils.getInstance()).passLeaveMessage(event.getPlayer().getName());
+            Antenna.getInstance(BungeeUtils.getInstance()).passLeaveMessage(event.getPlayer().getName(), ProxyServer.getInstance().getOnlineCount() - 1,  ProxyServer.getInstance().getConfig().getPlayerLimit());
         }
         catch(IOException e) {
             e.printStackTrace();

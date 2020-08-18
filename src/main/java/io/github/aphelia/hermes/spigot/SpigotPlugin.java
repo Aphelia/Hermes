@@ -1,5 +1,6 @@
 package io.github.aphelia.hermes.spigot;
 
+import io.github.aphelia.hermes.bungee.BungeeUtils;
 import io.github.aphelia.hermes.common.Antenna;
 import io.github.aphelia.hermes.common.TokenStorage;
 import org.bukkit.ChatColor;
@@ -40,11 +41,20 @@ public class SpigotPlugin extends JavaPlugin {
         }
         try {
             Antenna.getInstance(SpigotUtils.getInstance()).ping();
+            Antenna.getInstance(BungeeUtils.getInstance()).passConnectMessage();
         }
         catch(IOException | InterruptedException e) {
             e.printStackTrace();
         }
         Antenna.getInstance(SpigotUtils.getInstance()).start();
         getCommand("token").setExecutor(new CommandListener());
+    }
+    @Override
+    public void onDisable() {
+        try {
+            Antenna.getInstance(SpigotUtils.getInstance()).passConnectMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
