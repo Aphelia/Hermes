@@ -52,7 +52,7 @@ public class SpigotPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            Antenna.getInstance(SpigotUtils.getInstance()).passConnectMessage();
+            Antenna.getInstance(SpigotUtils.getInstance()).passDisconnectMessage();
         } catch (IOException e) {
             e.printStackTrace();
         }
