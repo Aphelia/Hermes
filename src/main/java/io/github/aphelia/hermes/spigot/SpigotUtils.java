@@ -2,6 +2,7 @@ package io.github.aphelia.hermes.spigot;
 
 import io.github.aphelia.hermes.common.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.logging.Level;
 
@@ -21,6 +22,6 @@ public class SpigotUtils implements Utils {
     }
     @Override
     public String getFormat() {
-        return SpigotPlugin.getPlugin(SpigotPlugin.class).getConfig().getString("format").replace('&', '§');
+        return ChatColor.translateAlternateColorCodes('&', SpigotPlugin.getPlugin(SpigotPlugin.class).getConfig().getString("format").replace('&', '§'));
     }
 }

@@ -1,6 +1,7 @@
 package io.github.aphelia.hermes.bungee;
 
 import io.github.aphelia.hermes.common.Utils;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -24,6 +25,6 @@ public class BungeeUtils implements Utils {
 
     @Override
     public String getFormat() {
-        return BungeePlugin.plugin.getConfig().getString("format").replace('&', '§');
+        return ChatColor.translateAlternateColorCodes('&', BungeePlugin.plugin.getConfig().getString("format"));
     }
 }
